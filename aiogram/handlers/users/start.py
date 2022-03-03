@@ -12,7 +12,7 @@ async def start(message: types.Message):
     name = message.from_user.full_name
     user_id = message.from_user.id
     name_playlist = f'Playlist_{user_id}'
-    name_history = f'History_{user_id}'
+
     date = message.date
     print(message)
     try:
@@ -27,9 +27,5 @@ async def start(message: types.Message):
     except Exception as e:
         print(e) 
      
-    try:
-        db.create_table_history(name_history=name_history)
-    except Exception as e:
-        print(f'Create_history {e}') 
- 
+
 

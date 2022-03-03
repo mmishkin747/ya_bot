@@ -1,15 +1,40 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
-page_buttons = InlineKeyboardMarkup(
+pg_button = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text='Back page', callback_data='back_page'),
-            InlineKeyboardButton(text='Next page', callback_data='next_page'),
+            InlineKeyboardButton(text='Предыдущая страница', callback_data='back_page'),
+            InlineKeyboardButton(text='Следующая страница', callback_data='next_page'),
 
         ],
         [
-           InlineKeyboardButton(text = 'Close', callback_data='close') 
+           InlineKeyboardButton(text = 'Закрыть', callback_data='close') 
+        ]
+    ]
+    
+    )
+pg_button_mp = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Предыдущая страница', callback_data='back_page_mp'),
+            InlineKeyboardButton(text='Следующая страница', callback_data='next_page_mp'),
+
+        ],
+        [
+           InlineKeyboardButton(text = 'Редактировать плейлист', callback_data='create_playlist') 
+        ],
+        [
+           InlineKeyboardButton(text = 'Закрыть', callback_data='close') 
+        ]
+    ]
+    )
+
+pg_button_close = InlineKeyboardMarkup(
+    inline_keyboard=[
+        
+        [
+           InlineKeyboardButton(text = 'Закрыть', callback_data='close') 
         ]
     ]
     
