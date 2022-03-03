@@ -14,7 +14,10 @@ async def on_startup(dispatcher):
     except Exception as e:
         print(e)
     print(db.select_all_users())
-
+    try:
+        db.create_table_history()
+    except Exception as e:
+        print(e)
 
     # Уведомляет про запуск
     await on_startup_notify(dispatcher)

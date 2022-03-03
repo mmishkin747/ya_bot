@@ -1,3 +1,4 @@
+from datetime import date
 from os import name
 import sqlite3
 from sqlite3.dbapi2 import connect
@@ -54,11 +55,14 @@ class Datebase:
         """
         self.execut(sql, commit=True)
 
-    def create_table_history(self, name_history: str):
-        sql = f"""CREATE TABLE {name_history}(
+    def create_table_history(self):
+        sql = f"""CREATE TABLE History(
             user_id int NOT NULL,
             id_mes_control int NOT NULL,
             id_mes_track varchar(255) NOT NULL,
+            name_playlist varchar(255) NOT NULL,
+            page int NOT NULL,
+            date_add int NOT NULL,
             PRIMARY KEY (id_mes_control),
             FOREIGN KEY (user_id) REFERENCES Users(id)
             );
@@ -66,34 +70,34 @@ class Datebase:
         self.execut(sql, commit=True)
 
 
-    def add_history(self, user_id, id_mes_control, id_mes_track):
-        name_history = f'History_{user_id}'
-        sql = f'INSERT INTO {name_history} (user_id, id_mes_control, id_mes_track) VALUES(?, ?, ?)'
-        parameters = (user_id, id_mes_control, id_mes_track)
+    def add_history(self, user_id, id_mes_control, id_mes_track, name_playlist, page):
+        date_add = date.today()
+        sql = f'INSERT INTO History (user_id, id_mes_control, id_mes_track, name_playlist, page, date_add) VALUES(?, ?, ?, ?, ?, ?)'
+        parameters = (user_id, id_mes_control, id_mes_track, name_playlist, page, date_add)
         self.execut(sql, parameters=parameters, commit=True)
 
 
     def get_history(self, user_id:int, id_mes_control:int):
-        name_history = f'History_{user_id}'
-        sql = f'SELECT id_mes_track FROM {name_history} WHERE id_mes_control = {id_mes_control}'
+        sql = f'SELECT * FROM History WHERE id_mes_control={id_mes_control} and user_id={user_id}'
         return self.execut(sql, fetchall=True)
 
     
     def del_history(self, user_id:int, id_mes_control:int):
-        name_history = f'History_{user_id}'
-        sql = f'DELETE FROM {name_history} WHERE id_mes_control = {id_mes_control}'
+        sql = f'DELETE FROM History WHERE id_mes_control={id_mes_control} and user_id={user_id}'
         return self.execut(sql, commit=True)
 
 
-    def add_track (self, name_playlist, id_track: str, uniq_id: str, date_add: int, name_track: str=None):
+    def add_track (self, name_playlist, id_track: str, uniq_id: str,  name_track: str=None):
+        date_add = date.today()
         sql = f'INSERT INTO {name_playlist} (id_track, uniq_id, name_track, date_add) VALUES(?, ?, ?, ?)'
         parameters = (id_track, uniq_id, name_track, date_add)
         self.execut(sql, parameters=parameters, commit=True)
 
 
-    def select_myplaylist(self, name_playlist, end: int, start: int=0):
-        sql = f'SELECT id_track FROM {name_playlist} ORDER BY date_add DESC LIMIT {start}, {end}'
-        return self.execut(sql) 
+    def select_myplaylist(self, user_id):
+        name_playlist = f'Playlist_{user_id}'
+        sql = f'SELECT id_track FROM {name_playlist}'
+        return self.execut(sql, fetchall=True) 
 
 
     def count_track_playlist(self, name_playlist):

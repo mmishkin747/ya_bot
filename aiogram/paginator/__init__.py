@@ -1,1 +1,2 @@
-from . import paginator_top100
+from . import paginator
+from . import paginator_mp
